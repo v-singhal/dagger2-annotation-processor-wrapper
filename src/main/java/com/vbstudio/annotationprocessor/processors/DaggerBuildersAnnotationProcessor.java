@@ -29,7 +29,7 @@ import javax.tools.JavaFileObject;
 
 
 @SupportedAnnotationTypes({"com.vbstudio.annotations.DaggerActivity", "com.vbstudio.annotations.DaggerFragment"})
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
 
     private final String ACTIVITY_SCOPE = "ActivityScope";
@@ -93,7 +93,7 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
             writer.close();
 
         } catch (IOException ignored) {
-            ignored.printStackTrace();
+
         }
     }
 
