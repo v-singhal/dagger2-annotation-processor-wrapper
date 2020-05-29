@@ -53,7 +53,7 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void processAnnotation(RoundEnvironment roundEnvironment, Class<? extends Annotation> annotation, String scope){
+    private void processAnnotation(RoundEnvironment roundEnvironment, Class<? extends Annotation> annotation, String scope) {
         Collection<? extends Element> elements = roundEnvironment.getElementsAnnotatedWith(annotation);
         List<TypeElement> typeElements = new ArrayList<>(ElementFilter.typesIn(elements));
         for (TypeElement typeElement : typeElements) {
@@ -73,16 +73,11 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
 
         final List<String> toImport = new ArrayList<>(this.imports);
         final List<BuilderItem> toBuildersName = new ArrayList<>(this.builders);
-
-        boolean isAndroidAnnotationsPass = true;
-
-        for (BuilderItem item: builders){
-            isAndroidAnnotationsPass &= item.name.contains("_");
-        }
-
-        final String toModuleName = getModuleName(isAndroidAnnotationsPass);
+        final String toRootPath = getRootPath(toImport);
+        final String toModuleName = getModuleName();
 
         String string = Mustache.compiler().compile(templateString).execute(new Object() {
+            Object rootPath = toRootPath;
             Object imports = toImport;
             Object builders = toBuildersName;
             Object moduleName = toModuleName;
@@ -96,8 +91,9 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
             writer.write(builder.toString());
             writer.flush();
             writer.close();
-        } catch (IOException ignored) {
 
+        } catch (IOException ignored) {
+            ignored.printStackTrace();
         }
     }
 
@@ -110,7 +106,7 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
         return template;
     }
 
-    private List<String> getModules(TypeElement typeElement, Class<? extends Annotation> annotation){
+    private List<String> getModules(TypeElement typeElement, Class<? extends Annotation> annotation) {
 
         List<String> moduleNames = new ArrayList<>();
 
@@ -156,11 +152,29 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
     }
 
     private String getActivityModuleFilePath(String moduleName) {
-        return "com.vbstudio.covid19.injector.modules." + moduleName;
+        return "com.vbstudio.injector.modules." + moduleName;
     }
 
-    private String getModuleName(boolean isAndroidAnnotationsPass){
-        return "BuildersModule" + (isAndroidAnnotationsPass ? "_" : "");
+    private String getModuleName() {
+        return "BuildersModule";
+    }
+
+    private String getRootPath(List<String> importPathList) {
+        String rootPath = "";
+        if (isValidList(importPathList)) {
+            int counter = 0;
+            char[] charPackageArr = importPathList.get(0).toCharArray();
+            for (char charValue : charPackageArr) {
+                if (charValue == '.' && ++counter == 3)
+                    break;
+                rootPath += charValue;
+            }
+        }
+        return rootPath;
+    }
+
+    private boolean isValidList(List<String> list) {
+        return list != null && list.size() > 0;
     }
 
     private class BuilderItem {
