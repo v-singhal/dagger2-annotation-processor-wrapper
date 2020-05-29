@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.samskivert:jmustache:1.13'
+    implementation 'com.github.v-singhal:dagger2-annotation:0.1'
+}
