@@ -2,8 +2,8 @@ package com.vbstudio.injector.modules;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import {{rootPath}}.core.injection.exposed.ActivityScope;
-import {{rootPath}}.core.injection.exposed.FragmentScope;
+import com.vbstudio.annotations.ActivityScope;
+import com.vbstudio.annotations.FragmentScope;
 
 {{#imports}}
 import {{.}};

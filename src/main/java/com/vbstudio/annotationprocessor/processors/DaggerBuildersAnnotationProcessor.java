@@ -73,11 +73,9 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
 
         final List<String> toImport = new ArrayList<>(this.imports);
         final List<BuilderItem> toBuildersName = new ArrayList<>(this.builders);
-        final String toRootPath = getRootPath(toImport);
         final String toModuleName = getModuleName();
 
         String string = Mustache.compiler().compile(templateString).execute(new Object() {
-            Object rootPath = toRootPath;
             Object imports = toImport;
             Object builders = toBuildersName;
             Object moduleName = toModuleName;
@@ -157,24 +155,6 @@ public class DaggerBuildersAnnotationProcessor extends AbstractProcessor {
 
     private String getModuleName() {
         return "BuildersModule";
-    }
-
-    private String getRootPath(List<String> importPathList) {
-        String rootPath = "";
-        if (isValidList(importPathList)) {
-            int counter = 0;
-            char[] charPackageArr = importPathList.get(0).toCharArray();
-            for (char charValue : charPackageArr) {
-                if (charValue == '.' && ++counter == 3)
-                    break;
-                rootPath += charValue;
-            }
-        }
-        return rootPath;
-    }
-
-    private boolean isValidList(List<String> list) {
-        return list != null && list.size() > 0;
     }
 
     private class BuilderItem {
