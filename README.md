@@ -1,11 +1,14 @@
 # dagger2-annotation-processor-wrapper
+
+[![](https://jitpack.io/v/v-singhal/dagger2-annotation-processor-wrapper.svg)](https://jitpack.io/#v-singhal/dagger2-annotation-processor-wrapper)
+
 #### Annotation Processor for Dagger2 Component Generation
 
 --------------------
 
 MIT License
 
-Copyright (c) [year] [fullname]
+Copyright (c) [2020] [Vaibhav Singhal]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
